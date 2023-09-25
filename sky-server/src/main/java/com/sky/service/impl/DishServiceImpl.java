@@ -2,12 +2,15 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -35,6 +38,9 @@ public class DishServiceImpl implements DishService {
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
 
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
+
     @Transactional
     public void savewithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
@@ -59,10 +65,45 @@ public class DishServiceImpl implements DishService {
     }
 
 
+    /**
+     * 分页查询
+     * @param dishPageQueryDTO
+     * @return
+     */
     public PageResult PageQuery(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         Page<DishVO> page= dishMapper.pageQuery(dishPageQueryDTO);
 
         return new PageResult(page.getTotal(), page.getResult());
+    }
+
+
+    /**
+     * 根据菜品id删除菜品
+     * @param ids
+     */
+    @Transactional
+    public void deleteDish(List<Long> ids) {
+        // 判断菜品是否可以被删除----》是否处于起售状态
+        for (Long id : ids) {
+         Long status = dishMapper.getStatusByID(id);
+         if(status==1){
+             throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+         }
+        }
+
+        // 判断菜品是否可以被删除----》是否被套餐关联
+        List<Long> setmealIdsByDishIds = setmealDishMapper.getSetmealIdsByDishIds(ids);
+        if(setmealIdsByDishIds!=null && setmealIdsByDishIds.size()>0){
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+
+        // 删除菜品
+        for (Long id : ids) {
+            dishMapper.deletById(id);
+            // 删除口味
+            dishFlavorMapper.deleteByDishId(id);
+
+        }
     }
 }
