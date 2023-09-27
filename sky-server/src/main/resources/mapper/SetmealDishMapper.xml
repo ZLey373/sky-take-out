@@ -8,4 +8,11 @@
          #{dishId}
       </foreach>
    </select>
+   <insert id="insertBatch">
+      insert into sky_take_out.setmeal_dish (id, setmeal_id, dish_id, name, price, copies)
+      values
+      <foreach collection="setmealDishes" item="df" separator=",">
+         (#{df.id},#{df.setmealId},#{df.dishId},#{df.name},#{df.price},#{df.copies})
+      </foreach>
+   </insert>
 </mapper>
