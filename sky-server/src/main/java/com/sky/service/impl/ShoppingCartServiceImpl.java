@@ -31,7 +31,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private SetmealMapper setmealMapper;
 
-    @Override
+    /**
+     * 添加购物车
+     * @param shoppingCartDTO
+     */
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart cart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO,cart);
@@ -67,5 +70,26 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
 
+    }
+
+    /**
+     * 查看购物车
+     * @return
+     */
+    public List<ShoppingCart> showShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart cart = ShoppingCart.builder()
+                .id(userId)
+                .build();
+        List<ShoppingCart> list = shoppingCartMapper.list(cart);
+        return list;
+    }
+
+    /**
+     * 清空购物车
+     */
+    public void cleanShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.deleteById(userId);
     }
 }
