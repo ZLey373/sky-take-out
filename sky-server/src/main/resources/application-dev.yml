@@ -16,6 +16,16 @@ sky:
     port: 6379
     password: 123456
     database: 10
+#    微信支付无资质，该部分参数无法获得，此时是错误的参数
   wechat:
     appid: wx5d7a55c82eb476fb
     secret: 705e12f875938fdfacb4e51ec1ffaa34
+    mchid: 1561414331
+    mchSerialNo: 4B3B3DC35414AD50B1B755BAF8DE9CC7CF407606
+    privateKeyFilePath: D:\pay\apiclient_key.pem
+    apiV3Key: CZBK51236435wxpay435434323FFDuv3
+    weChatPayCertFilePath: D:\pay\wechatpay_166D96F876F45C7D07CE98952A96EC980368ACFC.pem
+    notifyUrl: https://58869fb.r2.cpolar.top/notify/paySuccess
+    refundNotifyUrl: https://58869fb.r2.cpolar.top/notify/refundSuccess
+
+
