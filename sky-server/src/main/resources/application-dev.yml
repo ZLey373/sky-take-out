@@ -6,10 +6,11 @@ sky:
     database: sky_take_out
     username: root
     password: 925828
+  #隐私数据，保密，如要使用自行添加
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
-    access-key-id: LTAI5t6NHiwrHz7myGMLxY6L
-    access-key-secret: e8tEqI2hpGlExUUr5y0NcOnzZdAj9N
+    access-key-id: 
+    access-key-secret: 
     bucket-name: skytakeout-aliyunoss
   redis:
     host: localhost
