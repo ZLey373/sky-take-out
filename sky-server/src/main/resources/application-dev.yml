@@ -19,8 +19,8 @@ sky:
     database: 10
 #    微信支付无资质，该部分参数无法获得，此时是错误的参数
   wechat:
-    appid: wx5d7a55c82eb476fb
-    secret: 705e12f875938fdfacb4e51ec1ffaa34
+    appid: 
+    secret: 
     mchid: 1561414331
     mchSerialNo: 4B3B3DC35414AD50B1B755BAF8DE9CC7CF407606
     privateKeyFilePath: D:\pay\apiclient_key.pem
